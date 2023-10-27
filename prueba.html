@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="formulario" enctype="multipart/form-data">
+        <input type="text" name="Titulo" placeholder="Título">
+        <input type="text" name="Descripcion" placeholder="Descripción">
+        <input type="file" name="nombre_imagen" accept="image/*">
+        <button type="submit">Subir</button>
+    </form>
+    <div id="mensaje"></div>
+
+    <script>
+        document.getElementById("formulario").addEventListener("submit", function (event) {
+            event.preventDefault();
+            var formData = new FormData(this);
+
+            fetch("Api/postproductos.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("mensaje").innerHTML = data;
+                document.getElementById("formulario").reset(); // Limpia el formulario
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById("mensaje").innerHTML = "Error al enviar los datos.";
+            });
+        });
+    </script>
+</body>
+</html>
